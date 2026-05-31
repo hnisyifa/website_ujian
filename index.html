@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Interaktif</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#4f46e5,#7c3aed,#9333ea);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:700px;
+    background:white;
+    border-radius:25px;
+    padding:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h1{
+    text-align:center;
+    color:#000000;
+    margin-bottom:15px;
+    font-size:32px;
+}
+
+#timer{
+    text-align:center;
+    background:linear-gradient(135deg,#4f46e5,#7c3aed);
+    color:white;
+    padding:12px;
+    border-radius:12px;
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:18px;
+}
+
+.info{
+    text-align:center;
+    color:#555;
+    margin-bottom:20px;
+    line-height:1.6;
+}
+
+
+.question{
+    display:none;
+}
+
+.active{
+    display:block;
+}
+
+.question-box{
+    background:#f5f7ff;
+    padding:20px;
+    border-radius:18px;
+    border-left:6px solid #4f46e5;
+}
+
+.question-box p{
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:15px;
+    color:#222;
+}
+
+label{
+    display:block;
+    background:white;
+    padding:12px;
+    margin:8px 0;
+    border-radius:12px;
+    cursor:pointer;
+    transition:0.3s;
+    border:2px solid transparent;
+}
+
+label:hover{
+    background:#eef2ff;
+    border:2px solid #7c3aed;
+}
+
+input[type="radio"]{
+    margin-right:8px;
+}
+
+.btn-group{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+button{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.next-btn{
+    background:linear-gradient(135deg,#4f46e5,#7c3aed);
+}
+
+.prev-btn{
+    background:linear-gradient(135deg,#f59e0b,#f97316);
+}
+
+.finish-btn{
+    background:linear-gradient(135deg,#16a34a,#22c55e);
+}
+
+#hasil{
+    text-align:center;
+    margin-top:15px;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.lulus{
+    color:#16a34a;
+}
+
+.gagal{
+    color:#dc2626;
+}
+
+#riwayatPage{
+    display:none;
+    text-align:center;
+}
+
+#riwayatPage h2{
+    color:#4f46e5;
+    margin-bottom:15px;
+}
+
+#riwayatIsi{
+    background:#f8f9ff;
+    padding:25px;
+    border-radius:15px;
+    line-height:1.8;
+    font-size:18px;
+    text-align:left;
+    border-left:5px solid #4f46e5;
+    max-height:600px;
+    overflow-y:auto;
+}
+
+#ulangBtn{
+    margin-top:15px;
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#f59e0b,#f97316);
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+#namaSiswa{
+width:100%;
+padding:14px;
+border:2px solid #ddd;
+border-radius:12px;
+font-size:16px;
+margin-top:15px;
+margin-bottom:15px;
+}
+
+#mulaiBtn{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+background:linear-gradient(135deg,#4f46e5,#7c3aed);
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+    <body>
+
+<div class="container" id="startPage">
+
+<h1>Ulangan Pembelajaran Web</h1>
+
+<div class="info">
+Masukkan nama terlebih dahulu sebelum mengerjakan soal
+</div>
+
+<input type="text" id="namaSiswa" placeholder="Masukkan Nama Anda">
+
+<button id="mulaiBtn" onclick="mulaiQuiz()">
+Mulai Quiz
+</button>
+
+</div>
+
+<div class="container" id="quizContainer" style="display:none;">
+
+<h1>Ulangan Pembelajaran Web</h1>
+
+<div id="timer">30:00</div>
+
+<div class="info">
+
+20 Soal Pilihan Ganda <br>
+KKM : 85
+</div>
+<form id="quizForm">
+
+<!-- SOAL 1 -->
+ <div class="question-box question active" id="q1box">
+<p>1. Tag HTML yang digunakan untuk membuat hyperlink adalah?</p>
+<label><input type="radio" name="q1" value="a"> A. &lt;link&gt;</label>
+<label><input type="radio" name="q1" value="b"> B. &lt;a&gt;</label>
+<label><input type="radio" name="q1" value="c"> C. &lt;href&gt;</label>
+<label><input type="radio" name="q1" value="d"> D. &lt;url&gt;</label>
+<label><input type="radio" name="q1" value="e"> E. &lt;hyper&gt;</label>
+</div> <br>
+<!-- SOAL 2 -->
+ <div class="question-box question active" id="q2box">
+<p>2. Atribut HTML yang digunakan untuk menampilkan gambar adalah?</p>
+<label><input type="radio" name="q2" value="a"> A. href</label>
+<label><input type="radio" name="q2" value="b"> B. src</label>
+<label><input type="radio" name="q2" value="c"> C. alt</label>
+<label><input type="radio" name="q2" value="d"> D. image</label>
+<label><input type="radio" name="q2" value="e"> E. link</label>
+</div> <br>
+<!-- SOAL 3 -->
+ <div class="question-box question active" id="q3box">
+<p>3. CSS digunakan untuk?</p>
+<label><input type="radio" name="q3" value="a"> A. Mengelola database</label>
+<label><input type="radio" name="q3" value="b"> B. Membuat logika program</label>
+<label><input type="radio" name="q3" value="c"> C. Mengatur tampilan website</label>
+<label><input type="radio" name="q3" value="d"> D. Menjalankan server</label>
+<label><input type="radio" name="q3" value="e"> E. Menyimpan data</label>
+</div> <br>
+<!-- SOAL 4 -->
+ <div class="question-box question active" id="q4box">
+<p>4. Selector CSS untuk memilih elemen dengan id="menu" adalah?</p>
+<label><input type="radio" name="q4" value="a"> A. .menu</label>
+<label><input type="radio" name="q4" value="b"> B. #menu</label>
+<label><input type="radio" name="q4" value="c"> C. *menu</label>
+<label><input type="radio" name="q4" value="d"> D. menu#</label>
+<label><input type="radio" name="q4" value="e"> E. @menu</label>
+</div> <br>
+<!-- SOAL 5 -->
+ <div class="question-box question active" id="q5box">
+<p>5. Properti CSS untuk mengubah warna teks adalah?</p>
+<label><input type="radio" name="q5" value="a"> A. background</label>
+<label><input type="radio" name="q5" value="b"> B. font-color</label>
+<label><input type="radio" name="q5" value="c"> C. text</label>
+<label><input type="radio" name="q5" value="d"> D. color</label>
+<label><input type="radio" name="q5" value="e"> E. text-color</label>
+</div> <br>
+<!-- SOAL 6 -->
+ <div class="question-box question active" id="q6box">
+<p>6. Penulisan variabel PHP yang benar adalah?</p>
+<label><input type="radio" name="q6" value="a"> A. nama = "Budi";</label>
+<label><input type="radio" name="q6" value="b"> B. $nama = "Budi";</label>
+<label><input type="radio" name="q6" value="c"> C. var nama = "Budi";</label>
+<label><input type="radio" name="q6" value="d"> D. #nama = "Budi";</label>
+<label><input type="radio" name="q6" value="e"> E. @nama = "Budi";</label>
+</div> <br>
+<!-- SOAL 7 -->
+ <div class="question-box question active" id="q7box">
+<p>7. Fungsi PHP untuk menampilkan teks adalah?</p>
+<label><input type="radio" name="q7" value="a"> A. print()</label>
+<label><input type="radio" name="q7" value="b"> B. tampil()</label>
+<label><input type="radio" name="q7" value="c"> C. echo</label>
+<label><input type="radio" name="q7" value="d"> D. write()</label>
+<label><input type="radio" name="q7" value="e"> E. show()</label>
+</div> <br>
+<!-- SOAL 8 -->
+ <div class="question-box question active" id="q8box">
+<p>8. Ekstensi file PHP adalah?</p>
+<label><input type="radio" name="q8" value="a"> A. .html</label>
+<label><input type="radio" name="q8" value="b"> B. .css</label>
+<label><input type="radio" name="q8" value="c"> C. .php</label>
+<label><input type="radio" name="q8" value="d"> D. .js</label>
+<label><input type="radio" name="q8" value="e"> E. .sql</label>
+</div> <br>
+<!-- SOAL 9 -->
+ <div class="question-box question active" id="q9box">
+<p>9. Tag HTML untuk membuat tabel adalah?</p>
+<label><input type="radio" name="q9" value="a"> A. &lt;tr&gt;</label>
+<label><input type="radio" name="q9" value="b"> B. &lt;table&gt;</label>
+<label><input type="radio" name="q9" value="c"> C. &lt;td&gt;</label>
+<label><input type="radio" name="q9" value="d"> D. &lt;tb&gt;</label>
+<label><input type="radio" name="q9" value="e"> E. &lt;tab&gt;</label>
+</div> <br>
+<!-- SOAL 10 -->
+ <div class="question-box question active" id="q10box">
+<p>10. Properti CSS untuk memberi jarak bagian dalam elemen adalah?</p>
+<label><input type="radio" name="q10" value="a"> A. margin</label>
+<label><input type="radio" name="q10" value="b"> B. padding</label>
+<label><input type="radio" name="q10" value="c"> C. spacing</label>
+<label><input type="radio" name="q10" value="d"> D. border</label>
+<label><input type="radio" name="q10" value="e"> E. gap</label>
+</div> <br>
+<!-- SOAL 11 -->
+ <div class="question-box question active" id="q11box">
+<p>11. Tag HTML untuk membuat form adalah?</p>
+<label><input type="radio" name="q11" value="a"> A. &lt;input&gt;</label>
+<label><input type="radio" name="q11" value="b"> B. &lt;form&gt;</label>
+<label><input type="radio" name="q11" value="c"> C. &lt;label&gt;</label>
+<label><input type="radio" name="q11" value="d"> D. &lt;submit&gt;</label>
+<label><input type="radio" name="q11" value="e"> E. &lt;data&gt;</label>
+</div> <br>
+<!-- SOAL 12 -->
+ <div class="question-box question active" id="q12box">
+<p>12. Atribut method="post" pada form digunakan untuk?</p>
+<label><input type="radio" name="q12" value="a"> A. Mengirim data form</label>
+<label><input type="radio" name="q12" value="b"> B. Menghapus data</label>
+<label><input type="radio" name="q12" value="c"> C. Membuat database</label>
+<label><input type="radio" name="q12" value="d"> D. Menjalankan CSS</label>
+<label><input type="radio" name="q12" value="e"> E. Membuat tabel</label>
+</div> <br>
+<!-- SOAL 13 -->
+ <div class="question-box question active" id="q13box">
+<p>13. Selector CSS untuk memilih semua elemen adalah?</p>
+<label><input type="radio" name="q13" value="a"> A. .</label>
+<label><input type="radio" name="q13" value="b"> B. #</label>
+<label><input type="radio" name="q13" value="c"> C. *</label>
+<label><input type="radio" name="q13" value="d"> D. @</label>
+<label><input type="radio" name="q13" value="e"> E. &</label>
+</div> <br>
+<!-- SOAL 14 -->
+ <div class="question-box question active" id="q14box">
+<p>14. Properti CSS untuk membuat teks rata tengah adalah?</p>
+<label><input type="radio" name="q14" value="a"> A. align</label>
+<label><input type="radio" name="q14" value="b"> B. center</label>
+<label><input type="radio" name="q14" value="c"> C. text-position</label>
+<label><input type="radio" name="q14" value="d"> D. text-align</label>
+<label><input type="radio" name="q14" value="e"> E. position</label>
+</div> <br>
+<!-- SOAL 15 -->
+ <div class="question-box question active" id="q15box">
+<p>15. Fungsi isset() pada PHP digunakan untuk?</p>
+<label><input type="radio" name="q15" value="a"> A. Mengecek variabel ada atau tidak</label>
+<label><input type="radio" name="q15" value="b"> B. Menghapus variabel</label>
+<label><input type="radio" name="q15" value="c"> C. Membuat variabel</label>
+<label><input type="radio" name="q15" value="d"> D. Menampilkan variabel</label>
+<label><input type="radio" name="q15" value="e"> E. Menutup program</label>
+</div> <br>
+<!-- SOAL 16 -->
+ <div class="question-box question active" id="q16box">
+<p>16. Simbol untuk menggabungkan string pada PHP adalah?</p>
+<label><input type="radio" name="q16" value="a"> A. +</label>
+<label><input type="radio" name="q16" value="b"> B. &</label>
+<label><input type="radio" name="q16" value="c"> C. .</label>
+<label><input type="radio" name="q16" value="d"> D. :</label>
+<label><input type="radio" name="q16" value="e"> E. ,</label>
+</div> <br>
+<!-- SOAL 17 -->
+ <div class="question-box question active" id="q17box">
+<p>17. Tag HTML yang digunakan untuk membuat daftar tidak berurutan adalah?</p>
+<label><input type="radio" name="q17" value="a"> A. &lt;ol&gt;</label>
+<label><input type="radio" name="q17" value="b"> B. &lt;li&gt;</label>
+<label><input type="radio" name="q17" value="c"> C. &lt;ul&gt;</label>
+<label><input type="radio" name="q17" value="d"> D. &lt;list&gt;</label>
+<label><input type="radio" name="q17" value="e"> E. &lt;dl&gt;</label>
+</div> <br>
+<!-- SOAL 18 -->
+ <div class="question-box question active" id="q18box">
+<p>18. Properti CSS untuk mengubah ukuran huruf adalah?</p>
+<label><input type="radio" name="q18" value="a"> A. font-size</label>
+<label><input type="radio" name="q18" value="b"> B. text-size</label>
+<label><input type="radio" name="q18" value="c"> C. size-font</label>
+<label><input type="radio" name="q18" value="d"> D. font-style</label>
+<label><input type="radio" name="q18" value="e"> E. text-style</label>
+</div> <br>
+<!-- SOAL 19 -->
+ <div class="question-box question active" id="q19box">
+<p>19. Variabel PHP bersifat?</p>
+<label><input type="radio" name="q19" value="a"> A. Case Sensitive</label>
+<label><input type="radio" name="q19" value="b"> B. Tidak membedakan huruf besar kecil</label>
+<label><input type="radio" name="q19" value="c"> C. Selalu huruf kecil</label>
+<label><input type="radio" name="q19" value="d"> D. Selalu huruf besar</label>
+<label><input type="radio" name="q19" value="e"> E. Tidak boleh angka</label>
+</div> <br>
+<!-- SOAL 20 -->
+ <div class="question-box question active" id="q20box">
+<p>20. Fungsi include pada PHP digunakan untuk?</p>
+<label><input type="radio" name="q20" value="a"> A. Menghubungkan database</label>
+<label><input type="radio" name="q20" value="b"> B. Menggabungkan file lain ke dalam program</label>
+<label><input type="radio" name="q20" value="c"> C. Menghapus file</label>
+<label><input type="radio" name="q20" value="d"> D. Menjalankan CSS</label>
+<label><input type="radio" name="q20" value="e"> E. Membuat variabel</label>
+</div> <br>
+
+<div class="btn-group">
+    <button type="button" class="finish-btn" onclick="cekNilai()">
+        Selesai
+    </button>
+</div>
+
+</form>
+<div id="riwayatPage">
+<h2>Riwayat Hasil Quiz</h2>
+
+<div id="riwayatIsi"></div>
+
+<button id="ulangBtn" onclick="location.reload()">
+Coba Lagi
+</button>
+</div>
+
+</div>
+
+<script>
+
+let namaPeserta = "";
+let waktu = 1800;
+
+let timer;
+
+function startTimer(){
+
+timer = setInterval(function(){
+
+let menit = Math.floor(waktu / 60);
+let detik = waktu % 60;
+
+if(detik < 10){
+detik = '0' + detik;
+}
+
+document.getElementById('timer').innerHTML =
+menit + ':' + detik;
+
+waktu--;
+
+if(waktu < 0){
+clearInterval(timer);
+cekNilai();
+}
+
+},1000);
+
+}
+function mulaiQuiz(){
+
+let nama = document.getElementById("namaSiswa").value;
+
+if(nama == ""){
+alert("Masukkan nama terlebih dahulu!");
+return;
+}
+
+namaPeserta = nama;
+
+document.getElementById("startPage").style.display="none";
+document.getElementById("quizContainer").style.display="block";
+startTimer();
+
+}
+
+function nextQuestion(no){
+
+document.getElementById('q'+no+'box').classList.remove('active');
+document.getElementById('q'+(no+1)+'box').classList.add('active');
+
+}
+
+function prevQuestion(no){
+
+document.getElementById('q'+no+'box').classList.remove('active');
+document.getElementById('q'+(no-1)+'box').classList.add('active');
+
+
+}
+
+function cekNilai(){
+
+let kunci = {
+q1:'b', q2:'b', q3:'c', q4:'b', q5:'d',
+q6:'b', q7:'c', q8:'c', q9:'b', q10:'b',
+q11:'b', q12:'a', q13:'c', q14:'d', q15:'a',
+q16:'c', q17:'c', q18:'a', q19:'a', q20:'b'
+};
+
+let skor = 0;
+let benar = 0;
+let salah = 0;
+let status = "";
+
+let soal = {
+q1:"Tag HTML yang digunakan untuk membuat hyperlink adalah?",
+q2:"Atribut HTML yang digunakan untuk menampilkan gambar adalah?",
+q3:"CSS digunakan untuk?",
+q4:"Selector CSS untuk memilih elemen dengan id='menu' adalah?",
+q5:"Properti CSS untuk mengubah warna teks adalah?",
+q6:"Penulisan variabel PHP yang benar adalah?",
+q7:"Fungsi PHP untuk menampilkan teks adalah?",
+q8:"Ekstensi file PHP adalah?",
+q9:"Tag HTML untuk membuat tabel adalah?",
+q10:"Properti CSS untuk memberi jarak bagian dalam elemen adalah?",
+q11:"Tag HTML untuk membuat form adalah?",
+q12:"Atribut method='post' pada form digunakan untuk?",
+q13:"Selector CSS untuk memilih semua elemen adalah?",
+q14:"Properti CSS untuk membuat teks rata tengah adalah?",
+q15:"Fungsi isset() pada PHP digunakan untuk?",
+q16:"Simbol untuk menggabungkan string pada PHP adalah?",
+q17:"Tag HTML yang digunakan untuk membuat daftar tidak berurutan adalah?",
+q18:"Properti CSS untuk mengubah ukuran huruf adalah?",
+q19:"Variabel PHP bersifat?",
+q20:"Fungsi include pada PHP digunakan untuk?"
+};
+
+let detailJawaban = "";
+
+for(let i=1; i<=20; i++){
+
+let jawaban = document.querySelector('input[name="q'+i+'"]:checked');
+
+let jawabanUser = "-";
+
+if(jawaban){
+    jawabanUser = jawaban.value.toUpperCase();
+}
+
+if(jawaban && jawaban.value === kunci['q'+i]){
+
+    skor += 5;
+    benar++;
+
+    detailJawaban += `
+    <div style="background:#dcfce7;padding:15px;margin-bottom:10px;border-radius:10px;text-align:left">
+        <b>Soal ${i}</b><br><br>
+        ${soal['q'+i]}<br><br>
+
+        Jawaban Anda : ${jawabanUser}<br>
+        Jawaban Benar : ${kunci['q'+i].toUpperCase()}<br><br>
+
+        <span style="color:green;font-weight:bold">
+        ✔ BENAR
+        </span>
+    </div>
+    `;
+
+}else{
+
+    salah++;
+
+    detailJawaban += `
+    <div style="background:#fee2e2;padding:15px;margin-bottom:10px;border-radius:10px;text-align:left">
+        <b>Soal ${i}</b><br><br>
+        ${soal['q'+i]}<br><br>
+
+        Jawaban Anda : ${jawabanUser}<br>
+        Jawaban Benar : ${kunci['q'+i].toUpperCase()}<br><br>
+
+        <span style="color:red;font-weight:bold">
+        ✘ SALAH
+        </span>
+    </div>
+    `;
+}
+
+}
+
+if(skor >= 85){
+    status = "LULUS";
+}else{
+    status = "TIDAK LULUS";
+}
+
+document.getElementById("riwayatIsi").innerHTML = `
+<p><b>Nama :</b> ${namaPeserta}</p>
+<p><b>Jawaban Benar :</b> ${benar}</p>
+<p><b>Jawaban Salah :</b> ${salah}</p>
+<p><b>Nilai :</b> ${skor}</p>
+<p><b>Status :</b> ${status}</p>
+
+<hr><br>
+
+${detailJawaban}
+`;
+
+document.getElementById("quizForm").style.display = "none";
+document.getElementById("riwayatPage").style.display = "block";
+
+clearInterval(timer);
+
+}
+
+</script>
+
+</body>
+</html>
